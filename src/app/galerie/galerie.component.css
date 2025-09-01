@@ -1,3 +1,6 @@
+/* ===========================
+   Galerie diagonale (desktop)
+   =========================== */
 /* Variables :
    --card-height : hauteur des cartes
    --cut         : largeur du biseau (px)
@@ -14,7 +17,7 @@
     align-items: stretch;
     height: var(--card-height);
     position: relative;
-    padding: 5px 0px 5px 0px;
+    padding: 5px 0;
     background: black;
 }
 
@@ -23,8 +26,8 @@
     position: relative;
     width: calc((100% + (var(--overlaps) * var(--cut))) / var(--count));
     height: 100%;
-    overflow: hidden;
-    isolation: isolate;
+    overflow: visible;
+    /* IMPORTANT : pas de clipping sur .item */
 }
 
 /* Chevauchement contrôlé pour combler le biseau */
@@ -32,8 +35,15 @@
     margin-left: calc(-1 * var(--cut));
 }
 
-/* Image */
-.item img {
+/* Zone "média" clippée (biseau sur .media, pas sur .item) */
+.item .media {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+/* Image + scrim (dans .media) */
+.item .media img {
     width: 100%;
     height: 100%;
     object-fit: var(--fit, cover);
@@ -43,52 +53,7 @@
     transition: transform .4s ease, filter .4s ease;
 }
 
-/* Vrai biseautage via clip-path */
-.cut-right {
-    clip-path: polygon(0 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
-}
-
-.cut-left {
-    clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
-}
-
-.cut-both {
-    clip-path: polygon(var(--cut) 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
-}
-
-.cut-none {
-    clip-path: none;
-}
-
-/* Légende */
-.caption {
-    position: absolute;
-    z-index: 4;
-    letter-spacing: .02em;
-    font-size: clamp(1rem, 3vw, 2rem);
-    color: #fff;
-    text-shadow: 0 2px 14px rgba(0, 0, 0, .55);
-    pointer-events: none;
-    transition: opacity .35s ease, transform .35s ease;
-
-    /* Variables pilotées par l'ancrage + offsets */
-    --cap-top: 92%;
-    /* par défaut: bas-centre */
-    --cap-left: 50%;
-    --cap-tx: -50%;
-    --cap-ty: 0%;
-    --hover-ty: 0px;
-
-    top: calc(var(--cap-top) + var(--cap-dy, 0px));
-    left: calc(var(--cap-left) + var(--cap-dx, 0px));
-
-    /* Ordre choisi pour que l'offset ne soit PAS « tordu » par la rotation */
-    transform:
-        translate(var(--cap-tx), var(--cap-ty)) translate(0, var(--hover-ty)) rotate(var(--rot, 0deg));
-}
-
-/* Voile pour lisibilité */
-.scrim {
+.item .media .scrim {
     position: absolute;
     inset: 0;
     background: linear-gradient(to top, rgba(0, 0, 0, .35), rgba(0, 0, 0, 0) 55%);
@@ -96,23 +61,55 @@
     pointer-events: none;
 }
 
-/* Hover (optionnel) */
-.diagonal-gallery.reveal-on-hover .caption {
-    opacity: 0;
-    transform: rotate(var(--rot, 0deg)) translateY(12px);
+/* Biseautage via clip-path (appliqué à .media) */
+.item.cut-right .media {
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
 }
 
-.diagonal-gallery.reveal-on-hover .item:hover .caption {
-    opacity: 1;
-    transform: rotate(var(--rot, 0deg)) translateY(0);
+.item.cut-left .media {
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
 }
 
-.diagonal-gallery.reveal-on-hover .item:hover img {
-    /* conserve l’animation de zoom en tenant compte de --zoom */
-    transform: scale(calc(var(--zoom, 1) * 1.03));
-    filter: brightness(.85);
+.item.cut-both .media {
+    clip-path: polygon(var(--cut) 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
 }
 
+.item.cut-none .media {
+    clip-path: none;
+}
+
+/* Légende : toujours par-dessus, wrap + retours manuels supportés */
+.caption {
+    position: absolute;
+    z-index: 1000;
+    /* passe au-dessus des cartes voisines */
+    letter-spacing: .02em;
+    font-size: clamp(1rem, 3vw, 2rem);
+    color: #fff;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, .55);
+    pointer-events: none;
+    transition: opacity .35s ease, transform .35s ease;
+
+    white-space: pre-wrap;
+    /* supporte \n dans la chaîne */
+    overflow-wrap: anywhere;
+    /* casse les mots trop longs */
+    max-width: var(--cap-maxw, 88%);
+
+    /* Variables d’ancrage */
+    --cap-top: 92%;
+    --cap-left: 50%;
+    --cap-tx: -50%;
+    --cap-ty: 0%;
+    --hover-ty: 0px;
+
+    top: calc(var(--cap-top) + var(--cap-dy, 0px));
+    left: calc(var(--cap-left) + var(--cap-dx, 0px));
+    transform:
+        translate(var(--cap-tx), var(--cap-ty)) translate(0, var(--hover-ty)) rotate(var(--rot, 0deg));
+}
+
+/* Ancrages prédéfinis pour la légende */
 .cap-top-left {
     --cap-top: 8%;
     --cap-left: 8%;
@@ -162,21 +159,41 @@
     --cap-ty: 0;
 }
 
+/* Effets hover (zoom image + fade légende) */
+.diagonal-gallery.reveal-on-hover .caption {
+    opacity: 0;
+    --hover-ty: 12px;
+}
+
+.diagonal-gallery.reveal-on-hover .item:hover .caption {
+    opacity: 1;
+    --hover-ty: 0px;
+}
+
+.diagonal-gallery.reveal-on-hover .item:hover .media img {
+    transform: scale(calc(var(--zoom, 1) * 1.03));
+    filter: brightness(.85);
+}
+
 /* Desktop/Tablet: le wrapper n'existe pas pour le layout */
 .carousel-track {
     display: contents;
 }
 
-/* === Mobile: carrousel auto === */
+/* ===========================
+   Mobile : carrousel auto
+   =========================== */
 @media (max-width: 560px) {
     .diagonal-gallery {
         display: block;
         overflow: hidden;
         height: auto !important;
         padding: 0;
+        --mob-trans: 500ms;
+        /* par défaut, peut être bindée */
     }
 
-    /* La piste glisse d'un plein écran à l'autre */
+    /* Piste qui translate de 100% en 100% (une slide) */
     .carousel-track {
         display: flex;
         width: 100%;
@@ -192,37 +209,35 @@
         width: 100%;
         margin: 0;
         clip-path: none !important;
-        border-radius: 0px;
+        border-radius: 0;
         overflow: hidden;
-        isolation: isolate;
+        /* OK en mobile */
     }
 
-    /* Hauteur intrinsèque de la slide (ratio) */
+    /* Hauteur intrinsèque (ratio) : 4:3 par défaut
+     Ajustable par instance : style="--mobile-pad: 62.5%;" (≈ 16:10) */
     .diagonal-gallery .item::before {
         content: "";
         display: block;
         padding-top: var(--mobile-pad, 75%);
-        /* 4:3 par défaut */
     }
 
-    /* Calques absolus sur la zone utile */
-    .diagonal-gallery .item img,
-    .diagonal-gallery .item .scrim,
+    /* Calques absolus dans la slide */
+    .diagonal-gallery .item .media,
     .diagonal-gallery .item .caption {
         position: absolute;
         inset: 0;
     }
 
-    .diagonal-gallery .item img {
+    .diagonal-gallery .item .media img {
         width: 100%;
         height: 100%;
         object-fit: cover !important;
         object-position: 50% 50% !important;
         transform: none !important;
-        display: block;
     }
 
-    /* Caption simple en bas */
+    /* Caption simple en bas, lisible */
     .diagonal-gallery .item .caption {
         top: auto !important;
         bottom: 0 !important;
@@ -231,24 +246,32 @@
         transform: none !important;
         padding: 10px 12px;
         text-align: center !important;
-        font-size: clamp(1rem, 4.2vw, 1.25rem);
+        font-size: clamp(1.25rem, 10vw, 1.5rem);
         line-height: 1.2;
         white-space: normal;
         word-break: break-word;
-        background: linear-gradient(to top, rgba(0, 0, 0, .55), rgba(0, 0, 0, 0));
+        background: none !important;
+        text-shadow: 0 2px 10px rgb(0, 0, 0);
         z-index: 4;
     }
 
+    /* Pas de hover sur tactile : affichage permanent */
     .diagonal-gallery.reveal-on-hover .caption {
         opacity: 1 !important;
     }
 
-    .diagonal-gallery .scrim {
+    /* Scrim inutile en mobile (caption déjà fondue) */
+    .diagonal-gallery .item .media .scrim {
         display: none;
     }
 
-    /* Vitesse de transition paramétrable depuis l'Input TS */
-    .diagonal-gallery {
-        --mob-trans: 500ms;
+    .diagonal-gallery .item .media {
+        clip-path: none !important;
+    }
+
+    .diagonal-gallery .item.cut-right .media,
+    .diagonal-gallery .item.cut-left .media,
+    .diagonal-gallery .item.cut-both .media {
+        clip-path: none !important;
     }
 }

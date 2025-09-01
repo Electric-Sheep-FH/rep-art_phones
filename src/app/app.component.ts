@@ -25,9 +25,9 @@ export class AppComponent {
   ];
 
   secondGallerie: PhotoItem[] = [
-    { src: 'breaked-screen.png', alt: 'Atelier', caption: 'Parce qu\'un écran fissuré ne mérite pas de briser ta journée', rotate: 12, posY: 20, capAnchor: 'top-left', capOffsetY: 50 },
+    { src: 'breaked-screen.png', alt: 'Atelier', caption: 'Parce qu\'un écran fissuré ne mérite pas de briser ta journée', rotate: 7, posY: 20, capAnchor: 'top-left', capOffsetY: 50 },
     {
-      src: 'soudure.jpg', alt: 'Devis', caption: 'Le remplacement d\'un petit composant peut rendre le sourire', rotate: -5, capAnchor: 'bottom-center', capOffsetY: -100, capOffsetX: -100
+      src: 'soudure.jpg', alt: 'Devis', caption: 'Le remplacement d\'un petit composant peut rendre le sourire', rotate: -5, capAnchor: 'center'
     },
     { src: 'console-ex.png', alt: 'Garantie', caption: 'On répare tout... Sauf les textos gênants envoyés à ton ex.', rotate: -3, posY: 60, capOffsetY: -70 },
   ];

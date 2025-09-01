@@ -8,14 +8,18 @@
           'cut-both':  edge(i) === 'both',
           'cut-none':  edge(i) === 'none'
         }">
-            <img [src]="p.src" [alt]="p.alt || ''" loading="lazy" [style.--fit]="p.fit || 'cover'"
-                [style.--pos]="(p.posX ?? 50) + '% ' + (p.posY ?? 50) + '%'" [style.--zoom]="p.zoom ?? 1" />
+            <!-- NEW: wrapper pour le biseau -->
+            <div class="media">
+                <img [src]="p.src" [alt]="p.alt || ''" loading="lazy" [style.--fit]="p.fit || 'cover'"
+                    [style.--pos]="(p.posX ?? 50) + '% ' + (p.posY ?? 50) + '%'" [style.--zoom]="p.zoom ?? 1" />
+                <div class="scrim"></div>
+            </div>
+
             <figcaption class="caption pinyon-script-regular" [ngClass]="'cap-' + (p.capAnchor || 'bottom-center')"
                 [style.--cap-dx.px]="p.capOffsetX ?? 0" [style.--cap-dy.px]="p.capOffsetY ?? 0"
                 [style.text-align]="p.capAlign || 'center'" [style.--rot]="(p.rotate ?? 0) + 'deg'">
                 {{ p.caption }}
             </figcaption>
-            <div class="scrim"></div>
         </figure>
     </div>
 </div>
