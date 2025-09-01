@@ -1,0 +1,17 @@
+<nav class="navbar">
+    <div class="nav-content">
+        <div class="nav-logo">
+            <img class="img-logo" src="LogoTest2.png" alt="Logo" />
+        </div>
+
+        <ul [class.open]="menuOpen" class="nav-links">
+            <li><a class="roboto-main" href="#" (click)="scrollTop($event)">Accueil</a></li>
+            <li><a class="roboto-main" href="#services" (click)="onNavClick($event, 'services')">Mes services</a></li>
+            <li><a class="roboto-main" href="#contact" (click)="onNavClick($event, 'contact')">Contact</a></li>
+        </ul>
+
+        <button class="burger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen" aria-label="Menu">
+            &#9776;
+        </button>
+    </div>
+</nav>

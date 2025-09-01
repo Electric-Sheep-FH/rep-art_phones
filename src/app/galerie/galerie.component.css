@@ -1,0 +1,254 @@
+/* Variables :
+   --card-height : hauteur des cartes
+   --cut         : largeur du biseau (px)
+   --count       : nombre de cartes
+   --overlaps    : count - 1
+*/
+.diagonal-gallery {
+    --card-height: 360px;
+    --cut: var(--card-height);
+    --count: 3;
+    --overlaps: calc(var(--count) - 1);
+
+    display: flex;
+    align-items: stretch;
+    height: var(--card-height);
+    position: relative;
+    padding: 5px 0px 5px 0px;
+    background: black;
+}
+
+/* Largeur dynamique : (100% + overlaps * cut) / count */
+.item {
+    position: relative;
+    width: calc((100% + (var(--overlaps) * var(--cut))) / var(--count));
+    height: 100%;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+/* Chevauchement contrôlé pour combler le biseau */
+.item+.item {
+    margin-left: calc(-1 * var(--cut));
+}
+
+/* Image */
+.item img {
+    width: 100%;
+    height: 100%;
+    object-fit: var(--fit, cover);
+    object-position: var(--pos, 50% 50%);
+    display: block;
+    transform: scale(var(--zoom, 1));
+    transition: transform .4s ease, filter .4s ease;
+}
+
+/* Vrai biseautage via clip-path */
+.cut-right {
+    clip-path: polygon(0 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
+}
+
+.cut-left {
+    clip-path: polygon(var(--cut) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.cut-both {
+    clip-path: polygon(var(--cut) 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
+}
+
+.cut-none {
+    clip-path: none;
+}
+
+/* Légende */
+.caption {
+    position: absolute;
+    z-index: 4;
+    letter-spacing: .02em;
+    font-size: clamp(1rem, 3vw, 2rem);
+    color: #fff;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, .55);
+    pointer-events: none;
+    transition: opacity .35s ease, transform .35s ease;
+
+    /* Variables pilotées par l'ancrage + offsets */
+    --cap-top: 92%;
+    /* par défaut: bas-centre */
+    --cap-left: 50%;
+    --cap-tx: -50%;
+    --cap-ty: 0%;
+    --hover-ty: 0px;
+
+    top: calc(var(--cap-top) + var(--cap-dy, 0px));
+    left: calc(var(--cap-left) + var(--cap-dx, 0px));
+
+    /* Ordre choisi pour que l'offset ne soit PAS « tordu » par la rotation */
+    transform:
+        translate(var(--cap-tx), var(--cap-ty)) translate(0, var(--hover-ty)) rotate(var(--rot, 0deg));
+}
+
+/* Voile pour lisibilité */
+.scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, .35), rgba(0, 0, 0, 0) 55%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Hover (optionnel) */
+.diagonal-gallery.reveal-on-hover .caption {
+    opacity: 0;
+    transform: rotate(var(--rot, 0deg)) translateY(12px);
+}
+
+.diagonal-gallery.reveal-on-hover .item:hover .caption {
+    opacity: 1;
+    transform: rotate(var(--rot, 0deg)) translateY(0);
+}
+
+.diagonal-gallery.reveal-on-hover .item:hover img {
+    /* conserve l’animation de zoom en tenant compte de --zoom */
+    transform: scale(calc(var(--zoom, 1) * 1.03));
+    filter: brightness(.85);
+}
+
+.cap-top-left {
+    --cap-top: 8%;
+    --cap-left: 8%;
+    --cap-tx: 0;
+    --cap-ty: 0;
+}
+
+.cap-top-center {
+    --cap-top: 8%;
+    --cap-left: 50%;
+    --cap-tx: -50%;
+    --cap-ty: 0;
+}
+
+.cap-top-right {
+    --cap-top: 8%;
+    --cap-left: 92%;
+    --cap-tx: -100%;
+    --cap-ty: 0;
+}
+
+.cap-center {
+    --cap-top: 50%;
+    --cap-left: 50%;
+    --cap-tx: -50%;
+    --cap-ty: -50%;
+}
+
+.cap-bottom-left {
+    --cap-top: 92%;
+    --cap-left: 8%;
+    --cap-tx: 0;
+    --cap-ty: 0;
+}
+
+.cap-bottom-center {
+    --cap-top: 92%;
+    --cap-left: 50%;
+    --cap-tx: -50%;
+    --cap-ty: 0;
+}
+
+.cap-bottom-right {
+    --cap-top: 92%;
+    --cap-left: 92%;
+    --cap-tx: -100%;
+    --cap-ty: 0;
+}
+
+/* Desktop/Tablet: le wrapper n'existe pas pour le layout */
+.carousel-track {
+    display: contents;
+}
+
+/* === Mobile: carrousel auto === */
+@media (max-width: 560px) {
+    .diagonal-gallery {
+        display: block;
+        overflow: hidden;
+        height: auto !important;
+        padding: 0;
+    }
+
+    /* La piste glisse d'un plein écran à l'autre */
+    .carousel-track {
+        display: flex;
+        width: 100%;
+        will-change: transform;
+        transition: transform var(--mob-trans, 500ms) ease;
+        transform: translateX(calc(var(--idx, 0) * -100%));
+    }
+
+    /* Une “slide” = 100% de largeur */
+    .diagonal-gallery .item {
+        position: relative;
+        flex: 0 0 100%;
+        width: 100%;
+        margin: 0;
+        clip-path: none !important;
+        border-radius: 0px;
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    /* Hauteur intrinsèque de la slide (ratio) */
+    .diagonal-gallery .item::before {
+        content: "";
+        display: block;
+        padding-top: var(--mobile-pad, 75%);
+        /* 4:3 par défaut */
+    }
+
+    /* Calques absolus sur la zone utile */
+    .diagonal-gallery .item img,
+    .diagonal-gallery .item .scrim,
+    .diagonal-gallery .item .caption {
+        position: absolute;
+        inset: 0;
+    }
+
+    .diagonal-gallery .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important;
+        object-position: 50% 50% !important;
+        transform: none !important;
+        display: block;
+    }
+
+    /* Caption simple en bas */
+    .diagonal-gallery .item .caption {
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        padding: 10px 12px;
+        text-align: center !important;
+        font-size: clamp(1rem, 4.2vw, 1.25rem);
+        line-height: 1.2;
+        white-space: normal;
+        word-break: break-word;
+        background: linear-gradient(to top, rgba(0, 0, 0, .55), rgba(0, 0, 0, 0));
+        z-index: 4;
+    }
+
+    .diagonal-gallery.reveal-on-hover .caption {
+        opacity: 1 !important;
+    }
+
+    .diagonal-gallery .scrim {
+        display: none;
+    }
+
+    /* Vitesse de transition paramétrable depuis l'Input TS */
+    .diagonal-gallery {
+        --mob-trans: 500ms;
+    }
+}

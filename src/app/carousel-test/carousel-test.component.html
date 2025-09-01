@@ -1,0 +1,145 @@
+<div id="services" style="background-color: antiquewhite; padding: 15px 0px 15px 0px;">
+    <h1 class="component-title roboto-bold">Un exemple des prestations</h1>
+
+    <section class="articles">
+        <article>
+            <div class="article-wrapper">
+                <figure>
+                    <img src="reparation.jpg" alt="" />
+                </figure>
+                <div class="article-body" [class.show]="expanded[0]">
+                    <h2>Réparation Express</h2>
+
+                    <button class="toggle-desc" type="button" (click)="toggle(0)" [attr.aria-expanded]="expanded[0]"
+                        [attr.aria-controls]="'desc-0'">
+                        <span class="sr-only">{{ expanded[0] ? 'Réduire la description' : 'Afficher la description'
+                            }}</span>
+                        <span class="chevron" [class.up]="expanded[0]" aria-hidden="true"></span>
+                    </button>
+
+                    <p id="desc-0">
+                        Curabitur convallis ac quam vitae laoreet. Nulla mauris ante, euismod sed lacus sit amet, congue
+                        bibendum eros. Etiam mattis lobortis porta. Vestibulum ultrices iaculis enim imperdiet egestas.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-wrapper">
+                <figure>
+                    <img src="fissure.jpg" alt="" />
+                </figure>
+                <div class="article-body" [class.show]="expanded[1]">
+                    <h2>Remplacement d'écran</h2>
+
+                    <button class="toggle-desc" type="button" (click)="toggle(1)" [attr.aria-expanded]="expanded[1]"
+                        [attr.aria-controls]="'desc-1'">
+                        <span class="sr-only">{{ expanded[1] ? 'Réduire la description' : 'Afficher la description'
+                            }}</span>
+                        <span class="chevron" [class.up]="expanded[1]" aria-hidden="true"></span>
+                    </button>
+
+                    <p id="desc-1">
+                        Curabitur convallis ac quam vitae laoreet. Nulla mauris ante, euismod sed lacus sit amet, congue
+                        bibendum eros. Etiam mattis lobortis porta. Vestibulum ultrices iaculis enim imperdiet egestas.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-wrapper">
+                <figure>
+                    <img src="nettoyage.jpg" alt="" />
+                </figure>
+                <div class="article-body" [class.show]="expanded[2]">
+                    <h2>Nettoyage interne</h2>
+
+                    <button class="toggle-desc" type="button" (click)="toggle(2)" [attr.aria-expanded]="expanded[2]"
+                        [attr.aria-controls]="'desc-2'">
+                        <span class="sr-only">{{ expanded[2] ? 'Réduire la description' : 'Afficher la description'
+                            }}</span>
+                        <span class="chevron" [class.up]="expanded[2]" aria-hidden="true"></span>
+                    </button>
+
+                    <p id="desc-2">
+                        Curabitur convallis ac quam vitae laoreet. Nulla mauris ante, euismod sed lacus sit amet, congue
+                        bibendum eros. Etiam mattis lobortis porta. Vestibulum ultrices iaculis enim imperdiet egestas.
+                    </p>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="articles" style="margin-top: 20px;">
+        <article>
+            <div class="article-wrapper">
+                <figure>
+                    <img src="getdata.webp" alt="" />
+                </figure>
+                <div class="article-body" [class.show]="expanded[3]">
+                    <h2>Récupération de données</h2>
+
+                    <button class="toggle-desc" type="button" (click)="toggle(3)" [attr.aria-expanded]="expanded[3]"
+                        [attr.aria-controls]="'desc-3'">
+                        <span class="sr-only">{{ expanded[3] ? 'Réduire la description' : 'Afficher la description'
+                            }}</span>
+                        <span class="chevron" [class.up]="expanded[3]" aria-hidden="true"></span>
+                    </button>
+
+                    <p id="desc-3">
+                        Curabitur convallis ac quam vitae laoreet. Nulla mauris ante, euismod sed lacus sit amet, congue
+                        bibendum eros. Etiam mattis lobortis porta. Vestibulum ultrices iaculis enim imperdiet egestas.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-wrapper">
+                <figure>
+                    <img src="pieces-samsung-galaxy.png" alt="" />
+                </figure>
+                <div class="article-body" [class.show]="expanded[4]">
+                    <h2>Rachat pour pièces</h2>
+
+                    <button class="toggle-desc" type="button" (click)="toggle(4)" [attr.aria-expanded]="expanded[4]"
+                        [attr.aria-controls]="'desc-4'">
+                        <span class="sr-only">{{ expanded[4] ? 'Réduire la description' : 'Afficher la description'
+                            }}</span>
+                        <span class="chevron" [class.up]="expanded[4]" aria-hidden="true"></span>
+                    </button>
+
+                    <p id="desc-4">
+                        Curabitur convallis ac quam vitae laoreet. Nulla mauris ante, euismod sed lacus sit amet, congue
+                        bibendum eros. Etiam mattis lobortis porta. Vestibulum ultrices iaculis enim imperdiet egestas.
+                    </p>
+                </div>
+            </div>
+        </article>
+
+        <article>
+            <div class="article-wrapper">
+                <figure>
+                    <img src="demande.avif" alt="" />
+                </figure>
+                <div class="article-body" [class.show]="expanded[5]">
+                    <h2>Autres demandes ?</h2>
+
+                    <button class="toggle-desc" type="button" (click)="toggle(5)" [attr.aria-expanded]="expanded[5]"
+                        [attr.aria-controls]="'desc-5'">
+                        <span class="sr-only">{{ expanded[5] ? 'Réduire la description' : 'Afficher la description'
+                            }}</span>
+                        <span class="chevron" [class.up]="expanded[5]" aria-hidden="true"></span>
+                    </button>
+
+                    <p id="desc-5">
+                        Curabitur convallis ac quam vitae laoreet. Nulla mauris ante, euismod sed lacus sit amet, congue
+                        bibendum eros. Etiam mattis lobortis porta. Vestibulum ultrices iaculis enim imperdiet egestas.
+                    </p>
+                </div>
+            </div>
+        </article>
+    </section>
+</div>

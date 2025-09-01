@@ -1,0 +1,74 @@
+.wrapper {
+    display: flex;
+    gap: 2rem;
+    /* espace entre la map et la liste */
+    align-items: flex-start;
+    /* aligne en haut */
+}
+
+.map-container {
+    flex: 1;
+    /* prend la moitié gauche */
+    height: 600px;
+}
+
+.list-container {
+    flex: 1;
+    /* prend la moitié droite */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2rem;
+    /* centre verticalement la liste */
+    padding: 30px;
+}
+
+.title {
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: #ddd;
+    margin: 1.5rem 0;
+}
+
+.list-container h2 {
+    margin-bottom: 0.5rem;
+    /* ajuste la valeur selon ton besoin */
+}
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+        /* passe de row à column */
+        align-items: stretch;
+        /* chaque bloc prend 100% de largeur */
+        gap: 1rem;
+        /* un peu moins d'espace en mobile */
+    }
+
+    .map-container,
+    .list-container {
+        width: 100%;
+    }
+
+    hr {
+        margin: 0;
+    }
+
+    .map-container {
+        height: 360px;
+        /* réduit la hauteur pour le mobile */
+        /* order: 1;              /* décommente si tu veux forcer l'ordre */
+    }
+
+    .list-container {
+        padding: 16px;
+        /* padding plus léger en mobile */
+        /* order: 2;              /* décommente si tu veux forcer l'ordre */
+    }
+}

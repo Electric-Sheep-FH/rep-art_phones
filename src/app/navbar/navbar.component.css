@@ -1,0 +1,119 @@
+:root {
+    --navbar-padding: 1rem;
+}
+
+.navbar {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: min(1100px, 92vw);
+    background: transparent;
+}
+
+.nav-content {
+    display: flex;
+    flex-direction: column;
+    /* <-- vertical */
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(30, 30, 30, 0.9);
+    border-radius: 25px;
+    padding: var(--navbar-padding) 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Logo */
+.nav-logo {
+    margin-bottom: 0.5rem;
+}
+
+.img-logo {
+    height: 50px;
+    width: auto;
+}
+
+/* Liens */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+    white-space: nowrap;
+}
+
+.nav-links li a:hover {
+    color: var(--color-primary);
+}
+
+/* Burger (mobile) */
+.burger {
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: none;
+    margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-content {
+        /* Passe en ligne pour aligner logo à gauche / burger à droite */
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 0.75rem;
+        /* diminue la hauteur */
+        border-radius: 16px;
+        /* un peu moins arrondi (optionnel) */
+    }
+
+    .nav-logo {
+        margin: 0;
+    }
+
+    .img-logo {
+        height: 36px;
+        width: auto;
+    }
+
+    /* logo plus compact */
+
+    .burger {
+        display: block;
+        margin: 0;
+        font-size: 1.6rem;
+    }
+
+    /* Menu replié par défaut en mobile */
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: calc(100% - 8px);
+        /* colle le dropdown sous la barre */
+        left: 0;
+        right: 0;
+        background-color: rgba(30, 30, 30, 0.98);
+        border-radius: 0 0 16px 16px;
+        padding: 0.75rem 1rem 1rem;
+        flex-direction: column;
+        gap: 0.75rem;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+}

@@ -1,0 +1,54 @@
+.parallax-root {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    /* masque les débords pendant le translate */
+}
+
+/* Le média est plus grand en hauteur pour garder de la "marge" durant le translateY */
+.parallax-media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: calc(100% + 40vh);
+    /* marge parallax (ajuste selon ton besoin) */
+    object-fit: cover;
+    transform: translateY(var(--parallax-y, 0px));
+    will-change: transform;
+}
+
+/* Le contenu passe au-dessus */
+.parallax-content {
+    position: absolute;
+    inset: 0;
+    /* occupe toute la zone */
+    display: flex;
+    /* flex pour le centrage */
+    align-items: center;
+    /* centre verticalement */
+    justify-content: center;
+    /* centre horizontalement */
+    text-align: center;
+    /* centre le texte */
+    padding: 2rem;
+    z-index: 1;
+    color: white;
+    /* Optionnel : améliore la lisibilité du texte sur l'image */
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Respecte l’accessibilité : si l’utilisateur réduit les animations */
+@media (prefers-reduced-motion: reduce) {
+    .parallax-media {
+        transform: none !important;
+    }
+}
+
+/* Desktop : tu peux renforcer la marge si tu veux un effet plus ample */
+@media (min-width: 1024px) {
+    .parallax-media {
+        height: calc(100% + 60vh);
+    }
+}

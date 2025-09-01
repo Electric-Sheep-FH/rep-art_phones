@@ -1,0 +1,12 @@
+.logo-overlay {
+    height: 500px;
+    width: auto;
+    max-width: 45w;
+    margin-bottom: 5rem;
+}
+
+@media (max-width: 1024px) {
+    .logo-overlay {
+        height: 300px;
+    }
+}

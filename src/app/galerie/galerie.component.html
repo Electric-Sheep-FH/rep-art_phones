@@ -1,0 +1,21 @@
+<div class="diagonal-gallery" [class.reveal-on-hover]="hoverReveal" [style.--card-height.px]="height"
+    [style.--cut.px]="effectiveCut" [style.--count]="count" [style.--overlaps]="overlaps">
+
+    <div class="carousel-track" [style.--idx]="currentIndex">
+        <figure class="item" *ngFor="let p of photos; let i = index" [ngClass]="{
+          'cut-right': edge(i) === 'right',
+          'cut-left':  edge(i) === 'left',
+          'cut-both':  edge(i) === 'both',
+          'cut-none':  edge(i) === 'none'
+        }">
+            <img [src]="p.src" [alt]="p.alt || ''" loading="lazy" [style.--fit]="p.fit || 'cover'"
+                [style.--pos]="(p.posX ?? 50) + '% ' + (p.posY ?? 50) + '%'" [style.--zoom]="p.zoom ?? 1" />
+            <figcaption class="caption pinyon-script-regular" [ngClass]="'cap-' + (p.capAnchor || 'bottom-center')"
+                [style.--cap-dx.px]="p.capOffsetX ?? 0" [style.--cap-dy.px]="p.capOffsetY ?? 0"
+                [style.text-align]="p.capAlign || 'center'" [style.--rot]="(p.rotate ?? 0) + 'deg'">
+                {{ p.caption }}
+            </figcaption>
+            <div class="scrim"></div>
+        </figure>
+    </div>
+</div>

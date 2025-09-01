@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+/* Reset très basique */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --color-primary: #C11E2E;
+    --color-secondary: #B3C2F2;
+    --color-dark: #12130F;
+    --color-light: #ecf0f1;
+    --color-accent-rgb: 201, 193, 159;
+}
+
+.roboto-main {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+}
+
+.roboto-bold {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+}
+
+.pinyon-script-regular {
+    font-family: "Pinyon Script", cursive;
+    font-weight: 500;
+    font-style: normal;
+}
