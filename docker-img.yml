@@ -1,0 +1,29 @@
+name: Build and push Docker image (versioned)
+
+on:
+  push:
+    tags:
+      - 'v*'   # déclenche seulement pour les tags du type v1.2.3
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            fabhass/repart-phone:${{ github.ref_name }}
+            fabhass/repart-phone:latest
